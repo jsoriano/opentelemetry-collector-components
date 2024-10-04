@@ -5,7 +5,7 @@ ALL_DOC := $(shell find . \( -name "*.md" -o -name "*.yaml" \) \
                                 -type f | sort)
 
 # ALL_MODULES includes ./* dirs (excludes . dir)
-ALL_MODULES := $(shell find . -type f -name "go.mod" -exec dirname {} \; | sort | grep -E '^./' )
+ALL_MODULES := $(shell find . -type f -name "go.mod" -exec dirname {} \; | grep -v '^./_build' | sort | grep -E '^./' )
 
 GROUP ?= all
 FOR_GROUP_TARGET=for-$(GROUP)-target

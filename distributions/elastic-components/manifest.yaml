@@ -26,6 +26,7 @@ exporters:
 
 # workaround known issue https://github.com/open-telemetry/opentelemetry-collector/releases/tag/v0.110.0
 providers:
+  - gomod: github.com/elastic/opentelemetry-collector-components/confmap/provider/elasticagentprovider v0.0.0
   - gomod: go.opentelemetry.io/collector/confmap/provider/envprovider v1.16.0
   - gomod: go.opentelemetry.io/collector/confmap/provider/fileprovider v1.16.0
   - gomod: go.opentelemetry.io/collector/confmap/provider/httpprovider v0.110.0
@@ -33,7 +34,8 @@ providers:
   - gomod: go.opentelemetry.io/collector/confmap/provider/yamlprovider v0.110.0
 
 replaces:
+  - github.com/elastic/opentelemetry-collector-components/confmap/provider/elasticagentprovider => ../confmap/provider/elasticagentprovider
+  - github.com/elastic/opentelemetry-collector-components/connector/spanmetricsconnectorv2 => ../connector/spanmetricsconnectorv2
   - github.com/elastic/opentelemetry-collector-components/processor/elasticinframetricsprocessor => ../processor/elasticinframetricsprocessor
   - github.com/elastic/opentelemetry-collector-components/processor/elastictraceprocessor => ../processor/elastictraceprocessor
   - github.com/elastic/opentelemetry-collector-components/processor/lsmintervalprocessor => ../processor/lsmintervalprocessor
-  - github.com/elastic/opentelemetry-collector-components/connector/spanmetricsconnectorv2 => ../connector/spanmetricsconnectorv2

@@ -38,12 +38,10 @@ func (p *provider) Retrieve(ctx context.Context, _ string, watcher confmap.Watch
 	// TODO: Use the uri to setup the reader, defaulting to stdin.
 	err := p.ensureInitialized(ctx, os.Stdin)
 	if err != nil {
-		return "", fmt.Errorf("could not initialize Elastic Agent provider: %w", err)
+		return nil, fmt.Errorf("could not initialize Elastic Agent provider: %w", err)
 	}
 
 	//unitChanges := <-p.client.UnitChanges()
-
-	// TODO: Actually read the config.
 
 	return nil, nil
 }
@@ -97,11 +95,7 @@ func (p *provider) Shutdown(_ context.Context) error {
 		return nil
 	}
 
-	err := p.client.Stop()
-	if err != nil {
-		return err
-	}
-
+	p.client.Stop()
 	p.client = nil
 	p.services = nil
 	return nil
