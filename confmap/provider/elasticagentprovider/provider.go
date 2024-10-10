@@ -41,8 +41,6 @@ func (p *provider) Retrieve(ctx context.Context, _ string, watcher confmap.Watch
 		return nil, fmt.Errorf("could not initialize Elastic Agent provider: %w", err)
 	}
 
-	//unitChanges := <-p.client.UnitChanges()
-
 	return nil, nil
 }
 
@@ -76,7 +74,42 @@ func (p *provider) ensureInitialized(ctx context.Context, r io.Reader) error {
 	p.client = client
 	p.services = services
 
+	config, more, err := p.updateConfig()
+	if err != nil {
+		return fmt.Errorf("failed to get initial configuration: %w", err)
+	}
+	if !more {
+		return errors.New("client closed before getting initial configuration")
+	}
+
+	go clientLoop()
+
 	return nil
+}
+
+func (p *provider) clientLoop() {
+	for {
+		config, more, err := p.updateConfig()
+		if err != nil {
+		}
+		if !more {
+			return
+		}
+	}
+}
+
+func (p *provider) updateConfig() (*confmap.Retrieved, bool, error) {
+	select {
+	case changes, more := <-p.client.UnitChanges():
+		if !more {
+			return nil, false, nil
+		}
+		changes.Unit.Expected
+	case err, more := <-p.client.Errors() {
+		if !more {
+			return nil, false, nil
+		}
+	}
 }
 
 // Scheme returns the location scheme used by Retrieve.
